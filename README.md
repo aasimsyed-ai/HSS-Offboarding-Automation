@@ -42,6 +42,14 @@ At the end, it can also launch/focus Horizon and assist with AD GUI typing:
 
 This is attended automation. The bot pauses before each AD write action so you can confirm the right user and dialog are active.
 
+It can also focus ServiceNow in Edge and assist with closure:
+
+- Paste the correct Work notes
+- Set the SCTASK status to **Closed Complete**
+- Send `Ctrl+S` after you review the form
+
+If your ServiceNow form requires clicking an **Update** button instead of `Ctrl+S`, click **Update** manually when prompted.
+
 Local run logs are saved to `logs/`. The `logs/` folder is ignored by Git so ticket/user data does not get uploaded.
 
 ## Daily Flow

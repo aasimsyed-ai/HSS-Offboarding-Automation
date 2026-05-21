@@ -13,6 +13,7 @@ if (-not (Test-Path -LiteralPath $helperPath)) {
 }
 
 $vdiHelperPath = Join-Path $PSScriptRoot 'Invoke-HssVdiAdTask.ps1'
+$serviceNowHelperPath = Join-Path $PSScriptRoot 'Invoke-HssServiceNowClosure.ps1'
 
 function Read-RequiredText {
     param(
@@ -132,6 +133,10 @@ Write-Host ''
 
 if ((Test-Path -LiteralPath $vdiHelperPath) -and (Read-YesNo -Prompt 'Do you want the bot to open/focus Horizon and assist with the AD GUI steps now?')) {
     & $vdiHelperPath -SamAccountName $samAccountName -AdRenameValue $result.adRenameValue
+}
+
+if ((Test-Path -LiteralPath $serviceNowHelperPath) -and (Read-YesNo -Prompt 'Do you want the bot to update ServiceNow work notes and Closed Complete status now?')) {
+    & $serviceNowHelperPath -SctaskNumber $sctaskNumber -RitmNumber $ritmNumber -AlreadyDisabled:([bool] $alreadyDisabled)
 }
 
 New-Item -ItemType Directory -Force -Path $OutputDirectory | Out-Null

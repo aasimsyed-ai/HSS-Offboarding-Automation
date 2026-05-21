@@ -1,0 +1,9 @@
+{
+  "shortDescription": "Disable account and rename to Full Name-Pending Termination for Jane Doe",
+  "fullName": "Jane Doe",
+  "samAccountName": "jdoe",
+  "ritmNumber": "RITM1234567",
+  "terminationDate": "2026-01-01",
+  "emailForwardingOrAccessRequired": true
+}
+

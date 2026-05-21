@@ -8,13 +8,34 @@ The current bot is intentionally human-confirmed. It calculates the exact rename
 
 ## Quick Start
 
-Open PowerShell in this folder and run:
+For real mouse/keyboard automation, use the Python RPA bot.
+
+First-time setup:
+
+```cmd
+cd "C:\Users\aasim.rauf\Documents\New project\hss-offboarding"
+setup-rpa.cmd
+calibrate-rpa.cmd
+```
+
+Daily run:
+
+```cmd
+cd "C:\Users\aasim.rauf\Documents\New project\hss-offboarding"
+run-rpa.cmd
+```
+
+The RPA bot controls the laptop mouse and keyboard. It can open/focus Edge and Horizon, read/copy calibrated ServiceNow fields, paste into AD, reset the password, and close the SCTASK.
+
+Emergency stop: move the mouse to the upper-left corner of the screen.
+
+The older PowerShell helper is still available:
 
 ```powershell
 .\tools\Start-HssOffboardingTask.ps1
 ```
 
-This is the normal automation run. The bot will ask for:
+The helper will ask for:
 
 - SCTASK number
 - RITM number
@@ -52,6 +73,24 @@ If your ServiceNow form requires clicking an **Update** button instead of `Ctrl+
 Local run logs are saved to `logs/`. The `logs/` folder is ignored by Git so ticket/user data does not get uploaded.
 
 ## Test / Reference Modes
+
+To test the Python RPA calculation only:
+
+```cmd
+run-rpa.cmd --manual --dry-run
+```
+
+To run the Python RPA but skip AD:
+
+```cmd
+run-rpa.cmd --skip-ad
+```
+
+To run the Python RPA but skip ServiceNow closure:
+
+```cmd
+run-rpa.cmd --skip-servicenow
+```
 
 To show the old checklist while running automation:
 

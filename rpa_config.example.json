@@ -1,0 +1,40 @@
+{
+  "timing": {
+    "short_pause": 0.4,
+    "medium_pause": 1.0,
+    "long_pause": 3.0
+  },
+  "windows": {
+    "edge_title_contains": "HSS Service Management",
+    "horizon_title_contains": "Service Desk"
+  },
+  "servicenow": {
+    "offboarding_tasks_url": "",
+    "global_search_hotkey": ["ctrl", "alt", "g"],
+    "coordinates": {
+      "first_matching_task_row": [0, 0],
+      "request_number_field": [0, 0],
+      "work_notes_field": [0, 0],
+      "state_field": [0, 0],
+      "update_button": [0, 0],
+      "ritm_departure_date_field": [0, 0],
+      "ritm_email_forwarding_checkbox": [0, 0],
+      "ritm_email_access_checkbox": [0, 0],
+      "ritm_ad_username_field": [0, 0],
+      "ritm_full_name_field": [0, 0]
+    }
+  },
+  "ad": {
+    "coordinates": {
+      "find_user_search_box": [0, 0],
+      "find_now_button": [0, 0],
+      "first_search_result": [0, 0],
+      "rename_menu_item": [0, 0],
+      "reset_password_menu_item": [0, 0],
+      "new_password_field": [0, 0],
+      "confirm_password_field": [0, 0],
+      "reset_password_ok_button": [0, 0]
+    }
+  }
+}
+

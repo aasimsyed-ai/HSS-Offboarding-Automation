@@ -1,7 +1,16 @@
 [CmdletBinding()]
 param(
     [Parameter(Mandatory = $false)]
-    [string] $OutputDirectory = (Join-Path $PSScriptRoot '..\logs')
+    [string] $OutputDirectory = (Join-Path $PSScriptRoot '..\logs'),
+
+    [Parameter(Mandatory = $false)]
+    [switch] $ShowChecklist,
+
+    [Parameter(Mandatory = $false)]
+    [switch] $SkipVdi,
+
+    [Parameter(Mandatory = $false)]
+    [switch] $SkipServiceNow
 )
 
 Set-StrictMode -Version Latest
@@ -108,34 +117,27 @@ if ($emailForwarding -or $emailAccess) {
 $result = & $helperPath @helperArgs | ConvertFrom-Json
 
 Write-Host ''
-Write-Host 'Calculated AD rename value' -ForegroundColor Yellow
-Write-Host '--------------------------' -ForegroundColor Yellow
-Write-Host $result.adRenameValue -ForegroundColor Green
+Write-Host 'Automation target' -ForegroundColor Yellow
+Write-Host '-----------------' -ForegroundColor Yellow
+Write-Host ('AD rename:       {0}' -f $result.adRenameValue) -ForegroundColor Green
+Write-Host ('Reset password:  {0}' -f 'Qwerty@12345') -ForegroundColor Green
+Write-Host ('SCTASK status:   {0}' -f 'Closed Complete') -ForegroundColor Green
 Write-Host ''
 
-Write-Host 'Perform these actions now' -ForegroundColor Yellow
-Write-Host '-------------------------' -ForegroundColor Yellow
-for ($i = 0; $i -lt $result.checklist.Count; $i++) {
-    Write-Host ('{0}. {1}' -f ($i + 1), $result.checklist[$i])
+if ($ShowChecklist) {
+    Write-Host 'Reference checklist' -ForegroundColor Yellow
+    Write-Host '-------------------' -ForegroundColor Yellow
+    for ($i = 0; $i -lt $result.checklist.Count; $i++) {
+        Write-Host ('{0}. {1}' -f ($i + 1), $result.checklist[$i])
+    }
+    Write-Host ''
 }
 
-Write-Host ''
-Write-Host 'ServiceNow closure comments' -ForegroundColor Yellow
-Write-Host '---------------------------' -ForegroundColor Yellow
-if ($alreadyDisabled) {
-    Write-Host 'As checked, the account is already disabled.'
-}
-Write-Host 'Performed password reset.'
-Write-Host 'Renamed the user in AD.'
-Write-Host ''
-Write-Host 'Set SCTASK status to: Closed Complete' -ForegroundColor Green
-Write-Host ''
-
-if ((Test-Path -LiteralPath $vdiHelperPath) -and (Read-YesNo -Prompt 'Do you want the bot to open/focus Horizon and assist with the AD GUI steps now?')) {
+if (-not $SkipVdi -and (Test-Path -LiteralPath $vdiHelperPath)) {
     & $vdiHelperPath -SamAccountName $samAccountName -AdRenameValue $result.adRenameValue
 }
 
-if ((Test-Path -LiteralPath $serviceNowHelperPath) -and (Read-YesNo -Prompt 'Do you want the bot to update ServiceNow work notes and Closed Complete status now?')) {
+if (-not $SkipServiceNow -and (Test-Path -LiteralPath $serviceNowHelperPath)) {
     & $serviceNowHelperPath -SctaskNumber $sctaskNumber -RitmNumber $ritmNumber -AlreadyDisabled:([bool] $alreadyDisabled)
 }
 

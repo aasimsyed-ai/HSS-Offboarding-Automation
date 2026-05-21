@@ -14,7 +14,7 @@ Open PowerShell in this folder and run:
 .\tools\Start-HssOffboardingTask.ps1
 ```
 
-The bot will ask for:
+This is the normal automation run. The bot will ask for:
 
 - SCTASK number
 - RITM number
@@ -28,9 +28,8 @@ The bot will ask for:
 It will then print:
 
 - The exact AD rename value
-- The AD steps to perform through Omnisa Horizon / VDI
-- The exact ServiceNow closure comments
-- The **Closed Complete** status reminder
+- The standard reset password it will paste
+- The **Closed Complete** status it will apply
 
 At the end, it can also launch/focus Horizon and assist with AD GUI typing:
 
@@ -51,6 +50,20 @@ It can also focus ServiceNow in Edge and assist with closure:
 If your ServiceNow form requires clicking an **Update** button instead of `Ctrl+S`, click **Update** manually when prompted.
 
 Local run logs are saved to `logs/`. The `logs/` folder is ignored by Git so ticket/user data does not get uploaded.
+
+## Test / Reference Modes
+
+To show the old checklist while running automation:
+
+```powershell
+.\tools\Start-HssOffboardingTask.ps1 -ShowChecklist
+```
+
+To test calculation and logging without touching Horizon or ServiceNow:
+
+```powershell
+.\tools\Start-HssOffboardingTask.ps1 -SkipVdi -SkipServiceNow
+```
 
 ## Daily Flow
 

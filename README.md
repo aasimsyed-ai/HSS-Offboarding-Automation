@@ -4,7 +4,35 @@ This folder captures the daily offboarding workflow for:
 
 > Rename AD Account to Add Pending Termination Date
 
-The current helper is intentionally human-confirmed. It calculates the exact rename value and prints the checklist to follow in ServiceNow and Active Directory, but it does not directly modify AD.
+The current bot is intentionally human-confirmed. It calculates the exact rename value, prints the checklist to follow in ServiceNow and Active Directory, and saves a local run log, but it does not directly modify AD.
+
+## Quick Start
+
+Open PowerShell in this folder and run:
+
+```powershell
+.\tools\Start-HssOffboardingTask.ps1
+```
+
+The bot will ask for:
+
+- SCTASK number
+- RITM number
+- Departed employee full name
+- AD username from the AD account section
+- Departure Date
+- Whether **Email forwarding** is checked
+- Whether **Email Access** is checked
+- Whether the AD account is already disabled
+
+It will then print:
+
+- The exact AD rename value
+- The AD steps to perform through Omnisa Horizon / VDI
+- The exact ServiceNow closure comments
+- The **Closed Complete** status reminder
+
+Local run logs are saved to `logs/`. The `logs/` folder is ignored by Git so ticket/user data does not get uploaded.
 
 ## Daily Flow
 
@@ -55,7 +83,7 @@ The current helper is intentionally human-confirmed. It calculates the exact ren
 Example:
 
 ```powershell
-.\hss-offboarding\tools\New-HssOffboardingChecklist.ps1 `
+.\tools\New-HssOffboardingChecklist.ps1 `
   -FullName "Jane Doe" `
   -SamAccountName "jdoe" `
   -RitmNumber "RITM1234567" `

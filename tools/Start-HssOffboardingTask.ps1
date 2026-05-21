@@ -12,6 +12,8 @@ if (-not (Test-Path -LiteralPath $helperPath)) {
     throw "Helper script not found: $helperPath"
 }
 
+$vdiHelperPath = Join-Path $PSScriptRoot 'Invoke-HssVdiAdTask.ps1'
+
 function Read-RequiredText {
     param(
         [Parameter(Mandatory = $true)]
@@ -128,6 +130,10 @@ Write-Host ''
 Write-Host 'Set SCTASK status to: Closed Complete' -ForegroundColor Green
 Write-Host ''
 
+if ((Test-Path -LiteralPath $vdiHelperPath) -and (Read-YesNo -Prompt 'Do you want the bot to open/focus Horizon and assist with the AD GUI steps now?')) {
+    & $vdiHelperPath -SamAccountName $samAccountName -AdRenameValue $result.adRenameValue
+}
+
 New-Item -ItemType Directory -Force -Path $OutputDirectory | Out-Null
 $safeSctask = $sctaskNumber.ToUpperInvariant()
 $timestamp = Get-Date -Format 'yyyyMMdd-HHmmss'
@@ -155,4 +161,3 @@ $log = [ordered]@{
 
 $log | ConvertTo-Json -Depth 4 | Set-Content -LiteralPath $logPath -Encoding UTF8
 Write-Host ('Saved local run log: {0}' -f $logPath) -ForegroundColor DarkGray
-

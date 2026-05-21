@@ -32,6 +32,16 @@ It will then print:
 - The exact ServiceNow closure comments
 - The **Closed Complete** status reminder
 
+At the end, it can also launch/focus Horizon and assist with AD GUI typing:
+
+- Paste the AD username into the AD search box
+- Paste the exact rename value into the Rename field
+- Confirm the rename after you review it
+- Paste the password into the Reset Password dialog
+- Submit the password reset after you review it
+
+This is attended automation. The bot pauses before each AD write action so you can confirm the right user and dialog are active.
+
 Local run logs are saved to `logs/`. The `logs/` folder is ignored by Git so ticket/user data does not get uploaded.
 
 ## Daily Flow
@@ -104,3 +114,4 @@ Jane Doe Pending Termination 1 April 2026 RITM1234567
 - Confirm the calculated date before saving in AD.
 - Keep a copy of the ServiceNow task number/RITM in your work notes.
 - Do not use local PowerShell AD cmdlets for this workflow. AD actions should be completed through the approved VDI GUI.
+- When using VDI automation, confirm the correct AD user is selected before allowing the bot to submit rename or password reset.

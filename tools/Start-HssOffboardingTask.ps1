@@ -150,6 +150,7 @@ $log = [ordered]@{
     emailAccessChecked = $emailAccess
     alreadyDisabled = $alreadyDisabled
     pendingTerminationDate = $result.pendingTerminationDate
+    pendingTerminationAdDate = $result.pendingTerminationAdDate
     adRenameValue = $result.adRenameValue
     serviceNowClosureComments = @(
         if ($alreadyDisabled) { 'As checked, the account is already disabled.' }

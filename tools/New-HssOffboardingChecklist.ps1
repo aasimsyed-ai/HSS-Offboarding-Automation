@@ -34,6 +34,15 @@ function Format-HssDate {
     return $Date.ToString('d MMMM yyyy', [Globalization.CultureInfo]::InvariantCulture)
 }
 
+function Format-HssAdDate {
+    param(
+        [Parameter(Mandatory = $true)]
+        [datetime] $Date
+    )
+
+    return $Date.ToString('ddMMMyy', [Globalization.CultureInfo]::InvariantCulture).ToUpperInvariant()
+}
+
 $monthsToAdd = if ($EmailForwardingOrAccessRequired) { 3 } else { 1 }
 $accessDecision = if ($EmailForwardingOrAccessRequired) {
     'Email forwarding or email access required'
@@ -42,7 +51,7 @@ $accessDecision = if ($EmailForwardingOrAccessRequired) {
 }
 
 $pendingTerminationDate = $TerminationDate.AddMonths($monthsToAdd)
-$renameValue = '{0} Pending Termination {1} {2}' -f $FullName.Trim(), (Format-HssDate $pendingTerminationDate), $RitmNumber.Trim().ToUpperInvariant()
+$renameValue = '{0} PendingTermination {1} {2}' -f $FullName.Trim(), (Format-HssAdDate $pendingTerminationDate), $RitmNumber.Trim().ToUpperInvariant()
 
 $result = [ordered]@{
     taskType = 'Rename AD Account to Add Pending Termination Date'
@@ -54,6 +63,7 @@ $result = [ordered]@{
     accessDecision = $accessDecision
     monthsAdded = $monthsToAdd
     pendingTerminationDate = (Format-HssDate $pendingTerminationDate)
+    pendingTerminationAdDate = (Format-HssAdDate $pendingTerminationDate)
     adRenameValue = $renameValue
     checklist = @(
         'Confirm the ServiceNow short description matches the expected offboarding task.',
@@ -68,7 +78,7 @@ $result = [ordered]@{
         'Click OK.',
         'Do not change any other AD fields.',
         'Right click the user account and choose Reset Password.',
-        'Enter a password of your own choice.',
+        'Enter the standard reset password for this workflow.',
         'If the account was already disabled, add this SCTASK comment: As checked, the account is already disabled.',
         'Add this SCTASK comment: Performed password reset.',
         'Add this SCTASK comment: Renamed the user in AD.',

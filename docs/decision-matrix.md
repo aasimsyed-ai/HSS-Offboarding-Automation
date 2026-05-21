@@ -54,7 +54,7 @@ Use this before making any AD change.
 Use this exact format:
 
 ```text
-[Departed Employee Full Name] Pending Termination [Agreed Date] [RITM Number]
+[Departed Employee Full Name] PendingTermination [Agreed Date in DDMMMYY] [RITM Number]
 ```
 
 Do not change any other AD fields.
@@ -65,7 +65,7 @@ After the rename:
 
 1. Right click the user account.
 2. Click **Reset Password**.
-3. Enter a password of your own choice.
+3. Enter the standard reset password for this workflow.
 
 ## ServiceNow Closure Notes
 

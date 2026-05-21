@@ -12,7 +12,10 @@ param(
     [string] $HorizonWindowTitle = 'Service Desk',
 
     [Parameter(Mandatory = $false)]
-    [string] $HorizonClientPath = 'C:\Program Files\Omnissa\Omnissa Horizon Client\horizon-client.exe'
+    [string] $HorizonClientPath = 'C:\Program Files\Omnissa\Omnissa Horizon Client\horizon-client.exe',
+
+    [Parameter(Mandatory = $false)]
+    [string] $DefaultResetPassword = 'Qwerty@12345'
 )
 
 Set-StrictMode -Version Latest
@@ -102,24 +105,6 @@ function Send-ClipboardText {
     }
 }
 
-function Read-SecretPlainText {
-    param(
-        [Parameter(Mandatory = $true)]
-        [string] $Prompt
-    )
-
-    $secure = Read-Host -Prompt $Prompt -AsSecureString
-    $bstr = [Runtime.InteropServices.Marshal]::SecureStringToBSTR($secure)
-    try {
-        return [Runtime.InteropServices.Marshal]::PtrToStringBSTR($bstr)
-    }
-    finally {
-        if ($bstr -ne [IntPtr]::Zero) {
-            [Runtime.InteropServices.Marshal]::ZeroFreeBSTR($bstr)
-        }
-    }
-}
-
 Clear-Host
 Write-Host 'HSS Horizon / AD Attended Automation' -ForegroundColor Cyan
 Write-Host '====================================' -ForegroundColor Cyan
@@ -147,17 +132,13 @@ Start-OrFocusHorizon | Out-Null
 Write-Host 'Sent Enter to confirm the rename.' -ForegroundColor Green
 
 Wait-ForUser 'Open Reset Password for the same user. Click in the New password field, then return here.'
-$newPassword = Read-SecretPlainText -Prompt 'Enter the password to set in AD'
-$confirmPassword = Read-SecretPlainText -Prompt 'Re-enter the password'
-if ($newPassword -cne $confirmPassword) {
-    throw 'Passwords did not match. Password was not pasted.'
-}
+Write-Host 'The bot will use the standard reset password configured for this workflow.' -ForegroundColor DarkGray
 
 Start-OrFocusHorizon | Out-Null
-Send-ClipboardText -Text $newPassword -ClearAfterPaste
+Send-ClipboardText -Text $DefaultResetPassword -ClearAfterPaste
 [System.Windows.Forms.SendKeys]::SendWait('{TAB}')
 Start-Sleep -Milliseconds 250
-Send-ClipboardText -Text $newPassword -ClearAfterPaste
+Send-ClipboardText -Text $DefaultResetPassword -ClearAfterPaste
 Write-Host 'Pasted password into both password fields and cleared the local clipboard.' -ForegroundColor Green
 
 Wait-ForUser 'Review the Reset Password dialog. If it is correct, press Enter here and the bot will send Enter to submit. If it is wrong, close this window instead.'
@@ -166,4 +147,3 @@ Start-OrFocusHorizon | Out-Null
 Write-Host 'Sent Enter to submit password reset.' -ForegroundColor Green
 Write-Host ''
 Write-Host 'Now add the ServiceNow comments and set SCTASK status to Closed Complete.' -ForegroundColor Yellow
-

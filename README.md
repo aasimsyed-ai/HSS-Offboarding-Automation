@@ -37,7 +37,7 @@ At the end, it can also launch/focus Horizon and assist with AD GUI typing:
 - Paste the AD username into the AD search box
 - Paste the exact rename value into the Rename field
 - Confirm the rename after you review it
-- Paste the password into the Reset Password dialog
+- Paste the standard password into the Reset Password dialog
 - Submit the password reset after you review it
 
 This is attended automation. The bot pauses before each AD write action so you can confirm the right user and dialog are active.
@@ -74,7 +74,7 @@ Local run logs are saved to `logs/`. The `logs/` folder is ignored by Git so tic
 11. Reset the user account password:
    - Right click the user account.
    - Click **Reset Password**.
-   - Enter a password of your own choice.
+   - Enter the standard reset password for this workflow.
 12. Update the SCTASK:
    - If the account was already disabled, add:
      `As checked, the account is already disabled.`
@@ -89,6 +89,8 @@ Local run logs are saved to `logs/`. The `logs/` folder is ignored by Git so tic
 
 - If the user requires email forwarding or email access, use termination date plus 3 months.
 - If the user does not require any access, use termination date plus 1 month.
+- In AD rename text, use `PendingTermination` without a space.
+- In AD rename text, use date format `DDMMMYY`, for example `01APR26`.
 
 Example:
 
@@ -104,7 +106,7 @@ Example:
 Output rename value:
 
 ```text
-Jane Doe Pending Termination 1 April 2026 RITM1234567
+Jane Doe PendingTermination 01APR26 RITM1234567
 ```
 
 ## Safety Notes
